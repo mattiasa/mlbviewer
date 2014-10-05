@@ -184,7 +184,8 @@ def mainloop(myscr,mycfg,mykeys):
     # Listings
     mlbsched = MLBSchedule(ymd_tuple=startdate,
                           time_shift=mycfg.get('time_offset'),
-                          use_wired_web=mycfg.get('use_wired_web'))
+                          use_wired_web=mycfg.get('use_wired_web'),
+                          international=mycfg.get('international'))
     milbsched = MiLBSchedule(ymd_tuple=startdate,
                              time_shift=mycfg.get('time_offset'))
     # default to MLB.TV
@@ -506,6 +507,10 @@ def mainloop(myscr,mycfg,mykeys):
                                  listwin.current_cursor)
                 mywin = sbwin
             elif mywin in ( detailwin, ):
+                if not len(listwin.records):
+                    listwin.statusWrite("No listings for today.",wait=2)
+                    mywin = listwin
+                    continue
                 game=listwin.records[listwin.current_cursor]
                 gameid=game[6]
                 detail = MLBMediaDetail(mycfg,listwin.data)
