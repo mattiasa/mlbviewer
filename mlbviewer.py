@@ -11,6 +11,7 @@ import errno
 import signal
 import sys
 from MLBviewer import *
+import subprocess
 
 # used for ignoring sigwinch signal
 def donothing(sig, frame):
@@ -890,9 +891,14 @@ def mainloop(myscr,mycfg,mykeys):
                 myscr.refresh()
                 time.sleep(1)
 
-            play = MLBprocess(cmdStr)
+            play = MLBprocess(cmdStr, stdout=subprocess.PIP, errlog=subprocess.STDOUT)
             play.open()
-            play.waitInteractive(myscr)
+            out, err = play.process.communicate()
+            while process.poll():
+                for line in out:
+                    myscr.addstr(2,0,line)
+#                sys.stdin.write(err.read())
+            play.wait()
 
 
         # TODO: Needs attention for calendar

@@ -541,11 +541,11 @@ class MediaStream:
             self.hd_str += ' -s ' + str(self.max_bps)
         if self.media_state != 'MEDIA_ON' and self.start_time is None:
             self.hd_str += ' -f ' + str(HD_ARCHIVE_OFFSET)
-        elif self.start_time is not None:
+#        elif self.start_time is not None:
             # handle inning code here (if argument changes, here is where it
             # needs to be updated.
-            self.hd_str += ' -F ' + str(self.start_time)
-        self.hd_str += ' -o -'
+#            self.hd_str += ' -F ' + str(self.start_time)
+        self.hd_str += ' -o %f.ts'
         return self.hd_str
 
     def prepareRtmpdumpCmd(self,rec_cmd_str,filename,streamurl):
@@ -609,19 +609,19 @@ class MediaStream:
         if '%s' in player:
             if streamtype == 'video' and self.cfg.get('use_nexdef'):
                 cmd_str = player.replace('%s', '-')
-                cmd_str  = media_url + ' | ' + cmd_str
+                cmd_str  = media_url + ' ' + cmd_str
             elif self.cfg.get('use_librtmp') or streamtype == 'highlight':
                 cmd_str = player.replace('%s', media_url)
             else:
                 cmd_str = player.replace('%s', '-')
-                cmd_str  = media_url + ' | ' + cmd_str
+                cmd_str  = media_url + ' ' + cmd_str
         else:
             if streamtype == 'video' and self.cfg.get('use_nexdef'):
-                cmd_str = media_url + ' | ' + player + ' - '
+                cmd_str = media_url + ' ' + player + ' - '
             elif self.cfg.get('use_librtmp') or streamtype == 'highlight':
                 cmd_str = player + ' ' + media_url
             else:
-                cmd_str = media_url + ' | ' + player + ' - '
+                cmd_str = media_url + ' ' + player + ' - '
         if '%f' in player:
             fname = self.prepareFilename(gameid)
             cmd_str = cmd_str.replace('%f', fname)
