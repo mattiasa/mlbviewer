@@ -13,6 +13,10 @@ import time
 import pickle
 import copy
 
+import logging
+
+log = logging.getLogger(__name__)
+
 
 def padstr(s,num):
     if len(str(s)) < num:
@@ -80,7 +84,8 @@ try:
     available = mysched.getListings(mycfg.get('speed'),mycfg.get('blackout'))
 except (KeyError, MLBXmlError), detail:
     if cfg['debug']:
-        raise Exception, detail
+        log.debug("Failed to get listing", exc_info=True)
+        raise
     available = []
     #raise 
     print "There was a parser problem with the listings page"
