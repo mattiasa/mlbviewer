@@ -236,7 +236,7 @@ class MLBSchedule:
            except:
                continue
                raise Exception,repr(tmp)
-           if tmp['type'] in ('home_audio','away_audio'):
+           if tmp.get('type') in ('home_audio','away_audio'):
                if tmp['playback_scenario'] == 'AUDIO_FMS_32K':
                    if tmp['type'] == 'away_audio':
                        coverage = away
@@ -244,7 +244,7 @@ class MLBSchedule:
                        coverage = home
                    out = (tmp['display'], coverage, tmp['id'], event_id)
                    content['audio'].append(out)
-           elif tmp['type'] in ('alt_home_audio', 'alt_away_audio'):
+           elif tmp.get('type') in ('alt_home_audio', 'alt_away_audio'):
                if tmp['playback_scenario'] == 'AUDIO_FMS_32K':
                    if tmp['type'] == 'alt_away_audio':
                        coverage = away
@@ -252,7 +252,7 @@ class MLBSchedule:
                        coverage = home
                    out = (tmp['display'], coverage, tmp['id'], event_id)
                    content['alt_audio'].append(out)
-           elif tmp['type'] in ('mlbtv_national', 'mlbtv_home', 'mlbtv_away'):
+           elif tmp.get('type') in ('mlbtv_national', 'mlbtv_home', 'mlbtv_away'):
                if tmp['playback_scenario'] in \
                      ( 'HTTP_CLOUD_WIRED', 'HTTP_CLOUD_WIRED_WEB', 'FMS_CLOUD'):
                    # candidate for new procedure: determine whether game is 
@@ -299,7 +299,7 @@ class MLBSchedule:
                            content['video'][s].append(out)
                    else:
                        continue
-           elif tmp['type'] == 'condensed_game':
+           elif tmp.get('type') == 'condensed_game':
                out = ('CG',0,tmp['id'], event_id)
                content['condensed'].append(out)
         return content
